@@ -1,5 +1,7 @@
 # Notatez
-Futurist is a C#-based ASP.NET Core Blazor WebAssembly web app that generates random answers to personal questions about the future. The app's database is a JSON file that stores all possible answers, and the selected answer is displayed on the browser through a logic.
+Notatez is a feature-rich note application built on the ASP.NET MVC framework using C#. Designed to provide a seamless and intuitive user experience, Notatez offers a convenient platform for creating, organizing, and managing notes.
+
+One of the key highlights of Notatez is its efficient data storage mechanism. Instead of relying on a traditional database system, Notatez utilizes XML for data persistence. This approach eliminates the need for a complex database setup while still ensuring reliable storage and retrieval of note data.
 
 ## Problem
 The objective is to develop a versatile application capable of performing essential CRUD (Create, Read, Update, Delete) operations. The application should provide a mechanism to store these records persistently, either in a database or other persistent storage solutions. Additionally, the application should incorporate a user authentication component to ensure secure access.
