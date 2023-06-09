@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Account>
+@{
+    ViewData["Title"] = "Account List";
+}
+<h1>@ViewData["Title"]</h1>
+<p>
+    <a asp-action="Register">Create New</a>
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Account ID</th>
+            <th>Name</th>
+            <th>Email (Username)</th>
+            <th>Password</th>
+            <th>Date Created</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var account in Model)
+        {
+            <tr>
+                <td>@account.AccountId</td>
+                <td>@account.Name</td>
+                <td>@account.Email</td>
+                <td>@account.Password</td>
+                <td>@account.DateCreated</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Contact John Vicencio";
+}
+<section class="container pt-5">
+    <section class="mb-10 text-center">
+        <!-- Background image -->
+        <div class="p-5 bg-image" style="background-image: url('/images/zan-X_JsI_9Hl7o-unsplash.jpg'); height: 300px; background-size: cover; background-position: 50% 50%; " aria-controls="#picker-editor"></div>
+        <!-- Background image -->
+        <div class="card mx-4 mx-md-5 shadow-5-strong" style=" margin-top: -100px; background: hsla(0, 0%, 100%, 0.8); backdrop-filter: blur(30px); ">
+            <div class="card-body py-5 px-md-5">
+                <div class="row mb-5">
+                    <h1>@ViewData["Title"]</h1>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-6">
+                        <a href="https://johnvicencio.com/#contact" target="_blank" class="btn      btn-primary btn-block" aria-controls="#picker-editor">Email Me</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+
+
+@await Html.PartialAsync("_GitHubPartial")

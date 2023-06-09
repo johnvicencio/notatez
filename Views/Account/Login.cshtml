@@ -1,0 +1,41 @@
+﻿@model Account
+@{
+    ViewData["Title"] = "Account Login";
+}
+
+<section class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-4">
+            <h1 class="text-center">@ViewData["Title"]</h1>
+            <article>
+
+                <form asp-action="Login" asp-controller="Account" method="post">
+                    <input type="hidden" asp-antiforgery="true" />
+                    <!-- Name input -->
+                    <div class="form-group mb-4">
+                        <input type="email" asp-for="Email" class="form-control" placeholder="Email" />
+                        @*<label class="form-label" asp-for="Email"></label>*@
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <!-- Email input -->
+                    <div class="form-group mb-4">
+                        <input type="password" asp-for="Password" class="form-control" placeholder="Password" />
+                        @*<label class="form-label" asp-for="Password"></label>*@
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <!-- Checkbox -->
+                    <div class="form-check d-flex justify-content-center mb-4">
+                        <div class="text-center">
+                            <p><small>Not a member? <a asp-controller="Account" asp-action="Register">Register</a></small></p>
+                        </div>
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="submit" class="btn btn-primary btn-block mb-4">Login</button>
+                </form>
+            </article>
+        </div>
+    </div>
+</section>

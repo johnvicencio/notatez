@@ -1,0 +1,25 @@
+﻿<script src="~/lib/summernote/summernote.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#summernote').summernote({
+            height: 400,
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']]
+            ],
+            styleTags: ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
+            styleWithSpan: false,
+            callbacks: {
+                onPaste: function (e) {
+                    // Remove inline styles when pasting content
+                    var bufferText = ((e.originalEvent || e).clipboardData || window.clipboardData).getData('Text');
+                    e.preventDefault();
+                    document.execCommand('insertText', false, bufferText);
+                }
+            }
+        });
+    });
+
+</script>

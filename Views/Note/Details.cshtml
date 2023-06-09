@@ -1,0 +1,37 @@
+﻿@model Note
+@{
+    ViewData["Title"] = Model.Title;
+}
+<section class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h1>@ViewData["Title"]</h1>
+                </div>
+                <div class="card-body">
+                    @*@Model.Slug<br />*@
+                    @Html.Raw(Model.Content)
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center">
+                            <a title="Go back" href="javascript:void(0);" onclick="history.back();"><i class="fa-solid fa-arrow-left"></i></a>
+                            <a asp-action="Update" asp-route-id="@Model?.Id" title="Update" class="text-default"><i class="fa-solid fa-pen-to-square"></i> </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col text-center">
+                            <p>
+                                <small>Written by: <span class="font-weight-bold">@Model?.Account?.Name</span></small> |
+                                <small>Created On: <span class="font-weight-bold">@Model?.DateCreated</span></small> |
+                                <small>Modifed On: <span class="font-weight-bold">@Model?.DateModified</span></small>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

@@ -1,0 +1,133 @@
+﻿@model Page<NoteViewModel>
+
+@{
+    ViewData["Title"] = "Your Notes";
+}
+
+<section class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <h1>@ViewData["Title"] </h1>
+            <p>
+
+            </p>
+            <form asp-action="Index">
+                <div class="input-group align-items-center">
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="text" class="form-control" asp-for="SearchQuery" placeholder="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary btn-md waves-effect" type="button"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        <a asp-action="Create" class="btn btn-primary" title="Add Note"><i class="fa-solid fa-plus"></i></a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p>
+                <small>
+                    <a asp-action="Index" asp-route-sortBy="title" asp-route-sortOrder="@(Model.SortBy == "title" && Model.SortOrder == "asc" ? "desc" : "asc")">Title</a>
+                    @Html.Raw(GetSortIconHtml(Model.SortBy ?? string.Empty, "title", Model.SortOrder ?? string.Empty, "alpha")) |
+                    <a asp-action="Index" asp-route-sortBy="content" asp-route-sortOrder="@(Model.SortBy == "content" && Model.SortOrder == "asc" ? "desc" : "asc")">Content</a>
+                    @Html.Raw(GetSortIconHtml(Model.SortBy ?? string.Empty, "content", Model.SortOrder ?? string.Empty, "alpha")) |
+                    <a asp-action="Index" asp-route-sortBy="dateCreated" asp-route-sortOrder="@(Model.SortBy == "dateCreated" && Model.SortOrder == "asc" ? "desc" : "asc")">Date Created</a>
+                    @Html.Raw(GetSortIconHtml(Model.SortBy ?? string.Empty, "dateCreated", Model.SortOrder ?? string.Empty, "numeric")) |
+                    <a asp-action="Index" asp-route-sortBy="dateModified" asp-route-sortOrder="@(Model.SortBy == "dateModified" && Model.SortOrder == "asc" ? "desc" : "asc")">Date Modified</a>
+                    @Html.Raw(GetSortIconHtml(Model.SortBy ?? string.Empty, "dateModified", Model.SortOrder ?? string.Empty, "numeric"))
+                </small>
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        @foreach (var note in Model.Items)
+        {
+            <div class="col-lg-4 mb-3">
+                <h3>@note.ShortTitle</h3>
+                <article>
+                    @Html.Raw(System.Text.RegularExpressions.Regex.Replace(note.Description ?? string.Empty, "<.*?>", ""))
+                </article>
+                <p>
+                    <small>
+                        Creaated on: @note.DateCreated<br />
+                        Modified on: @note.DateModified
+                    </small>
+                </p>
+                <p>
+                    Actions: <a asp-action="Update" asp-route-id="@note.Id" title="Update" class="text-default">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>&nbsp;<a asp-action="Details" asp-route-id="@note.Id" title="Details" class="text-primary"><i class="fa-regular fa-file-lines"></i></a>&nbsp;&nbsp;<a asp-action="Delete" asp-route-id="@note.Id" title="Delete" class="text-danger"><i class="fa-regular fa-trash-can"></i></a>
+                </p>
+            </div>
+        }
+
+    </div>
+    <div class="pagination-container">
+        <nav aria-label="Pagination">
+            <ul class="pagination">
+                @if (Model.HasPreviousPage)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Action("Index", new { page = Model.CurrentPage - 1, pageSize = Model.PageSize, searchQuery = Model.SearchQuery, sortBy = Model.SortBy, sortOrder = Model.SortOrder })" title="Previous"><i class="fa-solid fa-arrow-left"></i></a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link" title="Previous"><i class="fa-solid fa-arrow-left"></i></a>
+                    </li>
+                }
+
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    if (i == Model.CurrentPage)
+                    {
+                        <li class="page-item active">
+                            <a class="page-link">@i</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Index", new { page = i, pageSize = Model.PageSize, searchQuery = Model.SearchQuery, sortBy = Model.SortBy, sortOrder = Model.SortOrder })">@i</a>
+                        </li>
+                    }
+                }
+
+                @if (Model.HasNextPage)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="@Url.Action("Index", new { page = Model.CurrentPage + 1, pageSize = Model.PageSize, searchQuery = Model.SearchQuery, sortBy = Model.SortBy, sortOrder = Model.SortOrder })" title="Next"><i class="fa-solid fa-arrow-right"></i></a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link" title="Next"><i class="fa-solid fa-arrow-right"></i></a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    </div>
+
+</section>
+
+
+
+@functions {
+    string GetSortIconHtml(string currentSortBy, string column, string currentSortOrder, string alphnumeric = "alpha")
+    {
+        if (currentSortBy == column && alphnumeric == "alpha")
+        {
+            string sortIcon = currentSortOrder == "asc" ? "<i class=\"fa-solid fa-arrow-up-z-a\"></i>" : "<i class=\"fa-solid fa-arrow-down-z-a\"></i>";
+            return $"<span class=\"sort-icon\">{sortIcon}</span>";
+        }
+        if (currentSortBy == column && alphnumeric == "numeric")
+        {
+            string sortIcon = currentSortOrder == "asc" ? "<i class=\"fa-solid fa-arrow-up-9-1\"></i>" : "<i class=\"fa-solid fa-arrow-down-9-1\"></i>";
+            return $"<span class=\"sort-icon\">{sortIcon}</span>";
+        }
+        return "";
+    }
+}

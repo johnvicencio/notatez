@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Notatez</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato&display=swap">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="~/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="~/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/images/favicon-16x16.png">
+    <link rel="manifest" href="~/images/site.webmanifest">
+    <link rel="mask-icon" href="~/images/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="~/images/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="~/images/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/mdb/css/mdb.min.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
+    @await RenderSectionAsync("Styles", required: false)
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Notatez.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        @await Html.PartialAsync("_NavbarPartial")
+
+
+        @*@await Html.PartialAsync("_NavbarPartial")*@
+    </header>
+    <main role="main">
+        @RenderBody()
+    </main>
+    <footer class="border-top footer mt-auto">
+        <div class="container">
+            &copy; @DateTime.Now.Year - Notatez - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> | Programmed by <a href="https://johnvicencio.com" target="_blank">John Vicencio</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/mdb/js/mdb.min.js"></script>
+    <script src="~/lib/font-awesome/js/all.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Accounts>
+  <Account>
+    <AccountId>1</AccountId>
+    <Role></Role>
+    <DateCreated>2023-06-07T23:21:08.047533-07:00</DateCreated>
+    <Notes />
+    <Name>jvicencio</Name>
+    <Email>jvicencio@johnvicencio.com</Email>
+    <Password>LYKx3OiUMmvAM1E4sWkHI6ycRhy8WEMhWQGP+JFaDPY=</Password>
+  </Account>
+  <Account>
+    <AccountId>2</AccountId>
+    <Role></Role>
+    <DateCreated>2023-06-08T02:47:31.9834484-04:00</DateCreated>
+    <Notes />
+    <Name>rserrano</Name>
+    <Email>rserrano@mythoslife.com</Email>
+    <Password>V3IFatMO880Cadp6u06KZsuj8COpiyfEXuSRnHicMw4=</Password>
+  </Account>
+</Accounts>
