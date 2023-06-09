@@ -47,7 +47,7 @@ By combining these features, Notatez offers a user-friendly note management solu
 6. Deployed on IIS server wint Windows OS
 
 ## Using the application
-1. Go to the URL: https://notatez.bsite.net
+1. Go to the URL: https://bit.johnvicencio.com/notatez
 2. Register if you haven't done so
 3. Logged in
 4. Enter a note, save, edit or delete.
