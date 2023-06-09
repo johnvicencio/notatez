@@ -29,16 +29,11 @@ public class NoteController : Controller
         ViewBag.SessionAccountId = sessionAccountId;
         ViewBag.SessionName = sessionName;
 
-        // Get all notes
-        IEnumerable<Note> allNotes = await _noteService.GetAllAsync(); 
-        //// Get session values to see if user is logged in
-        //int accountId = await _accountService.GetSessionAccountIdAsync();
-        //string sessionName = await _accountService.GetSessionUsernameAsync();
-        //ViewBag.SessionId = accountId;
-        //ViewBag.SessionName = sessionName;
+        // Set account
+        int accountId = sessionAccountId; 
 
-        //// Get all notes from accountId
-        //allNotes = allNotes.Where(n => n.AccountId == accountId);
+        // Get notes for the specific AccountId
+        IEnumerable<Note> allNotes = await _noteService.GetByAccountIdAsync(accountId);
 
         // Apply search query if provided
         if (!string.IsNullOrEmpty(searchQuery))
@@ -50,50 +45,19 @@ public class NoteController : Controller
         }
 
         // Apply sorting if provided
-        switch (sortBy)
-        {
-            case "title":
-                allNotes = sortOrder == "desc" ? allNotes.OrderByDescending(n => n.Title) : allNotes.OrderBy(n => n.Title);
-                break;
-            case "content":
-                allNotes = sortOrder == "desc" ? allNotes.OrderByDescending(n => n.Content) : allNotes.OrderBy(n => n.Content);
-                break;
-            case "dateCreated":
-                allNotes = sortOrder == "desc" ? allNotes.OrderByDescending(n => n.DateCreated) : allNotes.OrderBy(n => n.DateCreated);
-                break;
-            case "dateModified":
-                allNotes = sortOrder == "desc" ? allNotes.OrderByDescending(n => n.DateModified) : allNotes.OrderBy(n => n.DateModified);
-                break;
-            default:
-                allNotes = allNotes.OrderBy(n => n.Id);
-                break;
-        }
+        allNotes = ApplySorting(allNotes, sortBy, sortOrder);
 
-        // Apply pagination
-        var notes = allNotes
-            .Skip((page - 1) * pageSize)
-            .Take(pageSize)
-            .Select(n => new NoteViewModel
-            {
-                Id = n.Id,
-                Title = n.Title,
-                Slug = n.Slug,
-                Content = n.Content,
-                ShortTitle = n?.Title?.Length > 30 ? $"{ShortenText(n.Title, 30, true)}..." : n?.Title,
-                Description = n?.Content != null && GetPlainText(n.Content, true).Length > 100
-            ? $"{ShortenText(n.Content, 100, true)}..." : n?.Content,
-                DateCreated = n?.DateCreated ?? DateTime.MinValue,
-                DateModified = n?.DateModified ?? DateTime.MinValue,
-                AccountId = n?.AccountId,
-                Author = "Test"
-            })
-            .ToList();
+        // Pagination
+        var paginatedNotes = allNotes.Skip((page - 1) * pageSize).Take(pageSize);
+
+        // View model
+        var noteViewModels = paginatedNotes.Select(n => CreateNoteViewModel(n));
 
         // Create the Page model and pass it to the view
         var pageModel = new Page<NoteViewModel>
         {
-            Items = notes,
-            TotalItems = allNotes.Count(), // Get the total count after filtering
+            Items = noteViewModels.ToList(),
+            TotalItems = allNotes.Count(),
             CurrentPage = page,
             PageSize = pageSize,
             SearchQuery = searchQuery,
@@ -102,27 +66,6 @@ public class NoteController : Controller
         };
 
         return View(pageModel);
-    }
-
-    public async Task<IActionResult> Details(int id)
-    {
-        //Set session values
-        ViewBag.SessionAccountId = sessionAccountId;
-        ViewBag.SessionName = sessionName;
-        // Get session values to see if user is logged in
-        //int accountId = await _accountService.GetSessionAccountIdAsync();
-        //string sessionName = await _accountService.GetSessionUsernameAsync();
-        //ViewBag.SessionId = accountId;
-        //ViewBag.SessionName = sessionName;
-
-        var note = await _noteService.GetByIdAsync(id);
-
-        if (note == null)
-        {
-            return NotFound();
-        }
-
-        return View(note);
     }
 
     public async Task<IActionResult> Create()
@@ -325,6 +268,51 @@ public class NoteController : Controller
     private string ShortenText(string data, int length, bool decode = false)
     {
         return DataHelper.GetShortText(data, length, decode);
+    }
+
+    private IEnumerable<Note> ApplySorting(IEnumerable<Note> notes, string sortBy, string sortOrder)
+    {
+        switch (sortBy)
+        {
+            case "title":
+                notes = sortOrder == "desc" ? notes.OrderByDescending(n => n.Title) : notes.OrderBy(n => n.Title);
+                break;
+            case "content":
+                notes = sortOrder == "desc" ? notes.OrderByDescending(n => GetPlainText(n?.Content ?? "", true)) : notes.OrderBy(n => GetPlainText(n?.Content ?? "", true));
+                break;
+            //case "author":
+            //    notes = sortOrder == "desc" ? notes.OrderByDescending(n => GetPlainText(n?.Account?.Name ?? "", true)) : notes.OrderBy(n => GetPlainText(n?.Account?.Name ?? "", true));
+            //    break;
+            case "dateCreated":
+                notes = sortOrder == "desc" ? notes.OrderByDescending(n => n.DateCreated) : notes.OrderBy(n => n.DateCreated);
+                break;
+            case "dateModified":
+                notes = sortOrder == "desc" ? notes.OrderByDescending(n => n.DateModified) : notes.OrderBy(n => n.DateModified);
+                break;
+            default:
+                notes = notes.OrderBy(n => n.Id);
+                break;
+        }
+
+        return notes;
+    }
+
+    private NoteViewModel CreateNoteViewModel(Note note)
+    {
+        return new NoteViewModel
+        {
+            Id = note.Id,
+            Title = note.Title,
+            Slug = note.Slug,
+            Content = note.Content,
+            ShortTitle = note.Title?.Length > 30 ? $"{ShortenText(note.Title, 30, true)}..." : note.Title,
+            Description = note.Content != null && GetPlainText(note.Content, true).Length > 100 ? $"{ShortenText(note.Content, 100, true)}..." : note.Content,
+            DateCreated = note.DateCreated,
+            DateModified = note.DateModified,
+            Account = note.Account,
+            AccountId = note.AccountId,
+            Author = note.AccountId > 0 ? note.Account?.Name : "Unknown"
+        };
     }
 }
 

@@ -91,6 +91,38 @@ namespace Notatez.Models.Services
             return note;
         }
 
+        public async Task<IEnumerable<Note>> GetByAccountIdAsync(int accountId)
+        {
+            var xmlDocument = await LoadXmlDocumentAsync();
+
+            var noteElements = xmlDocument?.Root?
+                .Elements(xmlItem)
+                .Where(n => Convert.ToInt32(n.Element("AccountId")?.Value) == accountId);
+
+            if (noteElements == null || !noteElements.Any())
+            {
+                return Enumerable.Empty<Note>(); // No notes found for the specified AccountId
+            }
+
+            var notes = noteElements.Select(noteElement => new Note
+            {
+                Id = Convert.ToInt32(noteElement.Element("Id")?.Value),
+                Title = noteElement.Element("Title")?.Value ?? "",
+                Slug = noteElement.Element("Slug")?.Value ?? "",
+                Content = DecodeContent(noteElement.Element("Content")?.Value ?? ""),
+                DateCreated = Convert.ToDateTime(noteElement.Element("DateCreated")?.Value),
+                DateModified = Convert.ToDateTime(noteElement.Element("DateModified")?.Value),
+                AccountId = Convert.ToInt32(noteElement.Element("AccountId")?.Value),
+                Account = new Account
+                {
+                    AccountId = Convert.ToInt32(noteElement.Element("AccountId")?.Value),
+                    Name = noteElement.Element("Account")?.Element("Name")?.Value ?? ""
+                }
+            });
+
+            return notes;
+        }
+
         public async Task<Note> GetBySlugAsync(string slug)
         {
             var xmlDocument = await LoadXmlDocumentAsync();
