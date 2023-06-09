@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Notatez.Models;
 using Notatez.Models.Attributes;
+using Notatez.Models.Helpers;
 using Notatez.Models.Services;
 using Notatez.Models.ViewModels;
 
@@ -37,14 +38,18 @@ public class AccountController : Controller
         ViewBag.SessionAccountId = sessionAccountId;
         ViewBag.SessionName = sessionName;
 
-
-
-
-
-        var sessionId = await _accountService.GetSessionAccountIdAsync();
-        if (sessionId > 0)
+        string referrer = Request.Headers["Referer"].ToString();
+        if (!string.IsNullOrEmpty(referrer))
         {
-            return RedirectToAction("Index", "Home");
+            AlertHelper.SetAlert(this, "You may need to login to access this.", "warning");
+        }
+        else
+        {
+            var sessionId = await _accountService.GetSessionAccountIdAsync();
+            if (sessionId > 0)
+            {
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         return View();
@@ -66,7 +71,7 @@ public class AccountController : Controller
 
                 if (accountId > 0)
                 {
-                    // Authentication successful, redirect to desired page
+                    // Authentication successful, redirect to des   ired page
                     return RedirectToAction("Index", "Home");
                 }
                 else
@@ -74,6 +79,7 @@ public class AccountController : Controller
                     // Authentication failed, display error message
                     ModelState.AddModelError(string.Empty, "Invalid email or password");
                 }
+
             }
             else
             {
@@ -81,6 +87,7 @@ public class AccountController : Controller
                 ModelState.AddModelError(string.Empty, "Invalid email or password");
             }
         }
+
 
         // Model state is invalid or authentication failed, redisplay the login view with validation errors
         return View(account);

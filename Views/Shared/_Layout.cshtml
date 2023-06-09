@@ -25,12 +25,20 @@
 <body>
     <header>
         @await Html.PartialAsync("_NavbarPartial")
-
-
-        @*@await Html.PartialAsync("_NavbarPartial")*@
     </header>
     <main role="main">
-        @RenderBody()
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-4">
+                @if (ViewBag.AlertMessage != null)
+                {
+                    <div class="alert alert-@ViewBag.AlertType alert-dismissible fade show" role="alert">
+                        @ViewBag.AlertMessage
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+            </div>
+        </div>
+                @RenderBody()
     </main>
     <footer class="border-top footer mt-auto">
         <div class="container">

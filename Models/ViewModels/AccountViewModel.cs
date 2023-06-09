@@ -39,5 +39,8 @@ public class AccountViewModel
     [DataType(DataType.DateTime)]
     public DateTime DateCreated { get; set; } = DateTime.Now;
 
+    public string? AlertMessage { get; set; }
+    public string? AlertType { get; set; }
+
     public List<Note>? Notes { get; set; }
 }

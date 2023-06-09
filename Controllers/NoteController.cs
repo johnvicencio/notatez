@@ -68,6 +68,25 @@ public class NoteController : Controller
         return View(pageModel);
     }
 
+
+    public async Task<IActionResult> Details(int id)
+    {
+        // Set session values
+        ViewBag.SessionAccountId = sessionAccountId;
+        ViewBag.SessionName = sessionName;
+
+        // Get note by id
+        var note = await _noteService.GetByIdAsync(id);
+
+        if (note == null)
+        {
+            return NotFound();
+        }
+
+        return View(note);
+    }
+
+
     public async Task<IActionResult> Create()
     {
         //Set session values

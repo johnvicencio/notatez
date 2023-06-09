@@ -107,27 +107,7 @@
         @foreach (var note in Model.Items)
         {
             <article class="col-lg-3 mb-4">
-                @if (@ViewBag.SessionAccountId > 0)
-                {
-                    <a class="text-decoration-none text-reset" asp-action="Details" asp-controller="Note" asp-route-id="@note.Id" title="Details">
-                        <div class="card custom-card">
-                            <div class="card-body">
-                                <h5 class="card-title">@note.ShortTitle</h5>
-
-                                <div class="card-text">
-
-                                    @Html.Raw(System.Text.RegularExpressions.Regex.Replace(note.Description ?? string.Empty, "<.*?>", ""))
-
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                <small>Written by: @note.Author  | Created on: @note?.DateCreated | Modified on: @note?.DateModified</small>
-                            </div>
-                        </div>
-                    </a>
-                }
-                else
-                {
+                <a class="text-decoration-none text-reset" asp-action="Details" asp-controller="Note" asp-route-id="@note.Id" title="Details">
                     <div class="card custom-card">
                         <div class="card-body">
                             <h5 class="card-title">@note.ShortTitle</h5>
@@ -142,7 +122,7 @@
                             <small>Written by: @note.Author  | Created on: @note?.DateCreated | Modified on: @note?.DateModified</small>
                         </div>
                     </div>
-                }
+                </a>
             </article>
         }
 
