@@ -100,37 +100,6 @@ public class AccountController : Controller
         // Model state is invalid or authentication failed, redisplay the login view with validation errors
         return View(account);
     }
-    //public async Task<IActionResult> Login(AccountViewModel viewModel)
-    //{
-    //    var sessionId = await _accountService.GetSessionAccountIdAsync();
-
-    //    if (ModelState.IsValid)
-    //    {
-    //        if (!string.IsNullOrEmpty(viewModel.Username) && !string.IsNullOrEmpty(viewModel.Password))
-    //        {
-    //            int accountId = await _accountService.HandleAuthenticateAsync(viewModel.Username, viewModel.Password, HttpContext);
-
-    //            if (accountId > 0)
-    //            {
-    //                // User is authenticated, perform necessary actions
-    //                return RedirectToAction("Index", "Home");
-    //            }
-    //            else
-    //            {
-    //                // Authentication failed, display error message
-    //                ModelState.AddModelError(string.Empty, "Invalid username or password");
-    //            }
-    //        }
-    //        else
-    //        {
-    //            // Invalid credentials, display error message
-    //            ModelState.AddModelError(string.Empty, "Invalid username or password");
-    //        }
-    //    }
-
-    //    // Model state is invalid or authentication failed, redisplay the login view with validation errors
-    //    return View(viewModel);
-    //}
 
     public async Task<IActionResult> Logout()
     {
@@ -203,7 +172,7 @@ public class AccountController : Controller
             var msg = new SendGridMessage()
             {
                 From = new EmailAddress(fromEmail, fromName),
-                Subject = "Notatez App Regision Succesful!",
+                Subject = "Notatez App Registration Succesful!",
                 HtmlContent = EmailTemplateHelper.GetRegistrationEmailTemplate(toName, toEmail)
             };
             // Send email
@@ -224,37 +193,6 @@ public class AccountController : Controller
 
         return View(viewModel);
     }
-
-    //public IActionResult Register()
-    //{
-
-    //    return View();
-    //}
-
-    //[HttpPost]
-    //[ValidateAntiForgeryToken]
-    //public async Task<IActionResult> Register(Account account)
-    //{
-    //    //Check if account exists
-    //    var existingAccounts = await _accountService.GetAllAsync();
-    //    if (existingAccounts != null)
-    //    {
-    //        bool isUsernameAvailable = existingAccounts.All(a => a.Email != account.Email);
-    //        if (!isUsernameAvailable)
-    //        {
-    //            ModelState.AddModelError("Email", "Email already exists");
-    //            return View(account);
-    //        }
-    //    }
-
-    //    if (ModelState.IsValid)
-    //    {
-    //        await _accountService.CreateAsync(account);
-    //        return RedirectToAction("Index", "Account");
-    //    }
-
-    //    return View(account);
-    //}
 
     private string ReplaceTemplatePlaceholders(string htmlContent, string templateData)
     {
