@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using DotNetEnv;
 using Microsoft.Extensions.FileProviders;
 using Notatez.Models.Interfaces;
 using Notatez.Models.Services;
@@ -10,6 +11,24 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<NoteService>();
 builder.Services.AddSingleton<AccountService>();
 
+// Add SendGrid email service
+// Setting up:
+// Load .env file
+DotNetEnv.Env.Load();
+// Get the SendGrid API key from the environment variables
+string sendGridApiKey = Env.GetString("SENDGRID_API_KEY");
+// Check if the API key is available
+if (string.IsNullOrEmpty(sendGridApiKey))
+{
+    throw new Exception("SendGrid API key is missing or invalid.");
+}
+// Configure the SendGridEmailService with the API key
+builder.Services.AddSingleton<SendGridEmailService>(provider =>
+    new SendGridEmailService(sendGridApiKey));
+
+
+// Add configuration to lower case urls
+builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -61,9 +80,26 @@ app.UseSession();
 
 app.UseAuthorization();
 
+// Create a friendly URL
+app.MapControllerRoute(
+    name: "note",
+    pattern: "note/{**slug}",
+    defaults: new { controller = "Note", action = "Details" });
+
+// Home Default route
+app.MapControllerRoute(
+    name: "home",
+    pattern: "/{action=Index}/{id?}",
+    defaults: new { controller = "Home" }
+);
+
+// Original
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllers();
+
 
 app.Run();
 

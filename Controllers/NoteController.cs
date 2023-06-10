@@ -69,14 +69,15 @@ public class NoteController : Controller
     }
 
 
-    public async Task<IActionResult> Details(int id)
+    public async Task<IActionResult> Details(string slug)
     {
         // Set session values
         ViewBag.SessionAccountId = sessionAccountId;
         ViewBag.SessionName = sessionName;
 
         // Get note by id
-        var note = await _noteService.GetByIdAsync(id);
+        //var note = await _noteService.GetByIdAsync(id);
+        var note = await _noteService.GetBySlugAsync(slug);
 
         if (note == null)
         {

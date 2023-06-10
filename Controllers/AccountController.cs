@@ -13,12 +13,14 @@ public class AccountController : Controller
     private readonly AccountService _accountService;
     private readonly int sessionAccountId;
     private readonly string sessionName;
+    private readonly SendGridEmailService _emailService;
 
-    public AccountController(AccountService accountService)
+    public AccountController(AccountService accountService, SendGridEmailService emailService)
     {
         _accountService = accountService;
         sessionAccountId = _accountService.GetSessionAccountId();
         sessionName = _accountService.GetSessionUsername();
+        _emailService = emailService;
     }
 
     [AuthorizationNeeded]
@@ -38,10 +40,11 @@ public class AccountController : Controller
         ViewBag.SessionAccountId = sessionAccountId;
         ViewBag.SessionName = sessionName;
 
+        // Check if the request comes from another URL
         string referrer = Request.Headers["Referer"].ToString();
         if (!string.IsNullOrEmpty(referrer))
         {
-            AlertHelper.SetAlert(this, "You may need to login to access this.", "warning");
+            AlertHelper.SetAlert(this, "You'll need to login first.", "warning");
         }
         else
         {
@@ -180,6 +183,17 @@ public class AccountController : Controller
             account.Email = viewModel?.Email;
             account.Password = viewModel?.Password;
             await _accountService.CreateAsync(account);
+
+            // After successful registration
+            // Obtain the user's email address and other relevant information
+            // will work on this later: 6/9/23
+            //string recipientEmail = viewModel?.Email?.Trim() ?? "jvicencio+testing@johnvicencio.com";
+            //string recipientName = viewModel?.Name?.Trim() ?? "John Vicencio ToRegister";
+            //string subject = "Registration Confirmation";
+            //string messageBody = "Thank you for registering. Welcome to our platform!";
+
+            //await _emailService.SendEmailAsync(recipientEmail, recipientName, subject, messageBody);
+
             return RedirectToAction("Index", "Account");
         }
 

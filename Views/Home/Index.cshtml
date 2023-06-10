@@ -107,7 +107,7 @@
         @foreach (var note in Model.Items)
         {
             <article class="col-lg-3 mb-4">
-                <a class="text-decoration-none text-reset" asp-action="Details" asp-controller="Note" asp-route-id="@note.Id" title="Details">
+                <a class="text-decoration-none text-reset" asp-action="Details" asp-controller="Note" asp-route-slug="@note?.Slug" title="Details">
                     <div class="card custom-card">
                         <div class="card-body">
                             <h5 class="card-title">@note.ShortTitle</h5>
