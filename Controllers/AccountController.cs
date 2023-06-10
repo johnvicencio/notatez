@@ -172,7 +172,7 @@ public class AccountController : Controller
             var msg = new SendGridMessage()
             {
                 From = new EmailAddress(fromEmail, fromName),
-                Subject = "Notatez App Registration Succesful!",
+                Subject = "Welcome to Notatez - Thank you for Registering!",
                 HtmlContent = EmailTemplateHelper.GetRegistrationEmailTemplate(toName, toEmail)
             };
             // Send email

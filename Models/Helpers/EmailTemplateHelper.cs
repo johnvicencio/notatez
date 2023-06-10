@@ -42,10 +42,13 @@ public static class EmailTemplateHelper
                         <body>
                             <div class=""container"">
                                 <h1 class=""heading"">Welcome, " + name + @"!</h1>
-                                <p class=""message"">Thank you for registering with Notatez.</p>
-                                <p class=""message"">Your username is " + email + @".</p>
-                                <p class=""message"">Enjoy your stay and feel free to explore all the features.</p>
-                                <p class=""footer"">Regards,<br/>Your Notatez Team<br><a href='https://bit.johnvciencio.com/notatez'>https://bit.johnvciencio.com/notatez</a></p>
+                                <p class=""message"">Thank you for registering with Notatez! We're excited to have you on board.</p>
+                                <p class=""message"">Your username is: " + email + @".</p>
+                                <p class=""message"">Notatez is here to simplify your day-to-day tasks. With our intuitive interface, you can create and organize notes, set reminders, collaborate with others, and access your information from any device.</p>
+                                <p class=""message"">As a valued member, you'll enjoy exclusive features and updates. Need assistance? Our support team is ready to help.</p>
+                                <p class=""message"">Start exploring Notatez today and unlock the power of effective note-taking.</p>
+                                <p class=""message"">Welcome to Notatez!</p>
+                                <p class=""footer"">Regards,<br/>Your Notatez Team<br><a href='https://bit.johnvicencio.com'>https://bit.johnvicencio.com</a></p>
                             </div>
                         </body>
                         </html>";
