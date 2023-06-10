@@ -107,22 +107,20 @@
         @foreach (var note in Model.Items)
         {
             <article class="col-lg-3 mb-4">
-                <a class="text-decoration-none text-reset" asp-action="Details" asp-controller="Note" asp-route-slug="@note?.Slug" title="Details">
-                    <div class="card custom-card">
-                        <div class="card-body">
-                            <h5 class="card-title">@note.ShortTitle</h5>
+                <div class="card custom-card note-color">
+                    <div class="card-body">
+                        <h5 class="card-title">@note.ShortTitle</h5>
 
-                            <div class="card-text">
+                        <div class="card-text">
 
-                                @Html.Raw(System.Text.RegularExpressions.Regex.Replace(note.Description ?? string.Empty, "<.*?>", ""))
+                            @Html.Raw(System.Text.RegularExpressions.Regex.Replace(note.Description ?? string.Empty, "<.*?>", ""))
 
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                            <small>Written by: @note.Author  | Created on: @note?.DateCreated | Modified on: @note?.DateModified</small>
                         </div>
                     </div>
-                </a>
+                    <div class="card-footer">
+                        <small>Written by: @note.Author  | Created on: @note?.DateCreated | Modified on: @note?.DateModified</small>
+                    </div>
+                </div>
             </article>
         }
 

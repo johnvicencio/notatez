@@ -14,6 +14,8 @@ public class NoteController : Controller
     private readonly AccountService _accountService;
     private readonly int sessionAccountId;
     private readonly string sessionName;
+    private Dictionary<string, int> slugToIdMap = new Dictionary<string, int>();
+
 
     public NoteController(NoteService noteService, AccountService accountService)
     {
@@ -69,15 +71,15 @@ public class NoteController : Controller
     }
 
 
-    public async Task<IActionResult> Details(string slug)
+    public async Task<IActionResult> Details(int id)
     {
         // Set session values
         ViewBag.SessionAccountId = sessionAccountId;
         ViewBag.SessionName = sessionName;
 
         // Get note by id
-        //var note = await _noteService.GetByIdAsync(id);
-        var note = await _noteService.GetBySlugAsync(slug);
+        var note = await _noteService.GetByIdAsync(id);
+        //var note = await _noteService.GetBySlugAsync(slug);
 
         if (note == null)
         {
@@ -221,7 +223,7 @@ public class NoteController : Controller
                 Account = new Account
                 {
                     AccountId = viewModel.AccountId ?? 0,
-                    Name = viewModel.Account?.Name ?? string.Empty
+                    Name = viewModel.Account?.Name ?? sessionName
                 }
             };
 
@@ -231,7 +233,7 @@ public class NoteController : Controller
                 return NotFound();
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Details", "Note", new { id = viewModel.Id });
         }
 
         return View(viewModel);
@@ -333,6 +335,16 @@ public class NoteController : Controller
             AccountId = note.AccountId,
             Author = note.AccountId > 0 ? note.Account?.Name : "Unknown"
         };
+    }
+
+
+    private int? GetIdFromSlug(string slug)
+    {
+        if (slugToIdMap.TryGetValue(slug, out int id))
+        {
+            return id;
+        }
+        return null; // Slug not found
     }
 }
 

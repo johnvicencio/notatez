@@ -13,14 +13,12 @@ public class AccountController : Controller
     private readonly AccountService _accountService;
     private readonly int sessionAccountId;
     private readonly string sessionName;
-    private readonly SendGridEmailService _emailService;
 
-    public AccountController(AccountService accountService, SendGridEmailService emailService)
+    public AccountController(AccountService accountService)
     {
         _accountService = accountService;
         sessionAccountId = _accountService.GetSessionAccountId();
         sessionName = _accountService.GetSessionUsername();
-        _emailService = emailService;
     }
 
     [AuthorizationNeeded]

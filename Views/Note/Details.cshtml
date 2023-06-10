@@ -16,7 +16,7 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="d-flex flex-wrap justify-content-between align-items-center">
-                            <a title="Go back" href="javascript:void(0);" onclick="history.back();"><i class="fa-solid fa-arrow-left"></i></a>
+                            <a title="Go back" asp-controller="Note" asp-action="Index"><i class="fa-solid fa-arrow-left"></i></a>
                             <a asp-action="Update" asp-route-id="@Model?.Id" title="Update" class="text-default"><i class="fa-solid fa-pen-to-square"></i> </a>
                         </div>
                     </div>

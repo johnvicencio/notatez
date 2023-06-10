@@ -93,21 +93,35 @@
         @foreach (var note in Model.Items)
         {
             <div class="col-lg-4 mb-3">
-                <h3>@note.ShortTitle</h3>
-                <article>
-                    @Html.Raw(System.Text.RegularExpressions.Regex.Replace(note.Description ?? string.Empty, "<.*?>", ""))
-                </article>
-                <p>
-                    <small>
-                        Creaated on: @note.DateCreated<br />
-                        Modified on: @note.DateModified
-                    </small>
-                </p>
-                <p>
-                    Actions: <a asp-action="Update" asp-route-id="@note.Id" title="Update" class="text-default">
-                        <i class="fa-solid fa-pen-to-square"></i>
-                    </a>&nbsp;<a asp-action="Details" asp-route-id="@note.Id" title="Details" class="text-primary"><i class="fa-regular fa-file-lines"></i></a>&nbsp;&nbsp;<a asp-action="Delete" asp-route-id="@note.Id" title="Delete" class="text-danger"><i class="fa-regular fa-trash-can"></i></a>
-                </p>
+                <div class="card">
+                    <div class="card-header">
+                        <p>
+                            <a asp-action="Update" asp-route-id="@note.Id" title="Update" class="float-start">
+                                <i class="fa-solid fa-pen-to-square fa-2x"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@note.Id" title="Delete" class="float-end">
+                                <i class="fa-regular fa-trash-can fa-2x"></i>
+                            </a>
+                            <a asp-action="Details" asp-route-id="@note.Id" title="Details" class="float-start ms-2">
+                                <i class="fa-regular fa-file-lines fa-2x"></i>
+                            </a>
+                        </p>
+                    </div>
+                    <div class="card-body">
+                        <h2>@note.ShortTitle</h2>
+                        @Html.Raw(System.Text.RegularExpressions.Regex.Replace(note.Description ?? string.Empty, "<.*?>", ""))
+                    </div>
+                    <div class="card-footer">
+                        <p>
+                            <small>
+                                Creaated on: @note.DateCreated<br />
+                                Modified on: @note.DateModified
+                            </small>
+                        </p>
+                    </div>
+                </div>
+   
+
             </div>
         }
 
