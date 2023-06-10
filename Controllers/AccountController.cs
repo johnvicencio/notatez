@@ -5,20 +5,27 @@ using Notatez.Models.Attributes;
 using Notatez.Models.Helpers;
 using Notatez.Models.Services;
 using Notatez.Models.ViewModels;
+using SendGrid;
+using SendGrid.Helpers.Mail;
+using SendGrid.Helpers.Mail.Model;
 
 namespace Notatez.Controllers;
 
 public class AccountController : Controller
 {
     private readonly AccountService _accountService;
+    private readonly ISendGridClient _sendGridClient;
+    private readonly IConfiguration _configuration;
     private readonly int sessionAccountId;
     private readonly string sessionName;
 
-    public AccountController(AccountService accountService)
+    public AccountController(AccountService accountService, ISendGridClient sendGridClient, IConfiguration configuration)
     {
         _accountService = accountService;
         sessionAccountId = _accountService.GetSessionAccountId();
         sessionName = _accountService.GetSessionUsername();
+        _sendGridClient = sendGridClient;
+        _configuration = configuration;
     }
 
     [AuthorizationNeeded]
@@ -183,14 +190,34 @@ public class AccountController : Controller
             await _accountService.CreateAsync(account);
 
             // After successful registration
-            // Obtain the user's email address and other relevant information
-            // will work on this later: 6/9/23
-            //string recipientEmail = viewModel?.Email?.Trim() ?? "jvicencio+testing@johnvicencio.com";
-            //string recipientName = viewModel?.Name?.Trim() ?? "John Vicencio ToRegister";
-            //string subject = "Registration Confirmation";
-            //string messageBody = "Thank you for registering. Welcome to our platform!";
+            // Email confirmation
 
-            //await _emailService.SendEmailAsync(recipientEmail, recipientName, subject, messageBody);
+            //Set email items
+            string fromEmail = _configuration.GetSection("EmailSettings").GetValue<string>("FromEmail") ?? "test@johnvicencio.com";
+            string fromName = _configuration.GetSection("SendGridEmailSettings").GetValue<string>("FromName") ?? "Notatez Admin";
+
+            var toName = ExtractNameFromEmail(account?.Email?.Trim() ?? "User");
+            var toEmail = viewModel?.Email ?? "jvicencio+notatez@johnvicencio.com";
+
+
+            var msg = new SendGridMessage()
+            {
+                From = new EmailAddress(fromEmail, fromName),
+                Subject = "Notatez App Regision Succesful!",
+                HtmlContent = EmailTemplateHelper.GetRegistrationEmailTemplate(toName, toEmail)
+            };
+            // Send email
+            msg.AddTo(viewModel?.Email ?? "test@johnvicencio.com");
+            var response = await _sendGridClient.SendEmailAsync(msg);
+            bool sentEmail = response.IsSuccessStatusCode ? true : false;
+            if (sentEmail)
+            {
+                ViewBag.SuccessMessage = "Email Send Successfully";
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Email Sending Failed";
+            }
 
             return RedirectToAction("Index", "Account");
         }
@@ -228,4 +255,22 @@ public class AccountController : Controller
 
     //    return View(account);
     //}
+
+    private string ReplaceTemplatePlaceholders(string htmlContent, string templateData)
+    {
+        // Replace placeholders in the HTML template with the provided data
+        // For example, if your template has a placeholder "{{Name}}", you can replace it with the actual data
+
+        htmlContent = htmlContent.Replace("{{Name}}", templateData);
+
+        // Add more placeholder replacements as needed
+
+        return htmlContent;
+    }
+
+
+    private string ExtractNameFromEmail(string data)
+    {
+        return DataHelper.GetUsernameFromEmail(data);
+    }
 }

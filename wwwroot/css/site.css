@@ -60,95 +60,83 @@ h1, h2, h3 {
     --bs-danger: #c62828; /* New danger color */
     --bs-warning: #ffb74d; /* New warning color */
 }
-
-/* Override the primary classes in Bootstrap */
-.btn-primary:not(.fa),
-.badge-primary:not(.fa),
-.text-primary:not(.fa),
-.nav-pills .nav-link.active:not(.fa),
-.pagination .page-item.active .page-link:not(.fa) {
-    background-color: var(--bs-primary);
-    border-color: var(--bs-primary);
+/* Override the primary color for pagination */
+.pagination .page-item .page-link {
+    background-color: transparent;
+    border-color: transparent;
+    color: var(--bs-primary); /* Text color for page link */
 }
 
-    .btn-primary:not(.fa):hover,
-    .btn-primary:not(.fa):focus,
-    .btn-primary:not(.fa):active,
-    .btn-primary:not(.fa).active,
-    .badge-primary:not(.fa)[href],
-    .text-primary:not(.fa):hover,
-    .text-primary:not(.fa):focus,
-    .text-primary:not(.fa):active,
-    .text-primary:not(.fa).active,
-    .nav-pills .nav-link.active:not(.fa):hover,
-    .nav-pills .nav-link.active:not(.fa):focus,
-    .nav-pills .nav-link.active:not(.fa):active,
-    .pagination .page-item.active .page-link:not(.fa):hover,
-    .pagination .page-item.active .page-link:not(.fa):focus,
-    .pagination .page-item.active .page-link:not(.fa):active {
+.pagination .page-item.active .page-link {
+    background-color: var(--bs-primary); /* New primary color for active page link */
+    border-color: var(--bs-primary);
+    color: #fff; /* Text color for active page link */
+}
+
+.pagination .page-item .page-link:hover,
+.pagination .page-item .page-link:focus,
+.pagination .page-item .page-link:active {
+    background-color: #757575; /* New primary color on hover, focus, and active states */
+    border-color: #757575;
+    color: #fff; /* Text color for page link on hover, focus, and active states */
+}
+
+/* Primary button */
+.btn-primary {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+    color: #fff; /* Text color for primary button */
+}
+
+    .btn-primary:hover,
+    .btn-primary:focus,
+    .btn-primary:active,
+    .btn-primary.active {
         background-color: #757575; /* New primary color on hover, focus, and active states */
         border-color: #757575;
     }
 
-/* Override the success classes in Bootstrap */
-.btn-success:not(.fa),
-.badge-success:not(.fa),
-.text-success:not(.fa) {
+/* Success button */
+.btn-success {
     background-color: var(--bs-success); /* New success color */
     border-color: var(--bs-success);
+    color: #fff; /* Text color for success button */
 }
 
-    .btn-success:not(.fa):hover,
-    .btn-success:not(.fa):focus,
-    .btn-success:not(.fa):active,
-    .btn-success:not(.fa).active,
-    .badge-success:not(.fa)[href],
-    .text-success:not(.fa):hover,
-    .text-success:not(.fa):focus,
-    .text-success:not(.fa):active,
-    .text-success:not(.fa).active {
+    .btn-success:hover,
+    .btn-success:focus,
+    .btn-success:active,
+    .btn-success.active {
         background-color: #85a25f; /* New success color on hover, focus, and active states */
         border-color: #85a25f;
     }
 
-/* Override the danger classes in Bootstrap */
-.btn-danger:not(.fa),
-.badge-danger:not(.fa),
-.text-danger:not(.fa) {
+/* Danger button */
+.btn-danger {
     background-color: var(--bs-danger); /* New danger color */
     border-color: var(--bs-danger);
+    color: #fff; /* Text color for danger button */
 }
 
-    .btn-danger:not(.fa):hover,
-    .btn-danger:not(.fa):focus,
-    .btn-danger:not(.fa):active,
-    .btn-danger:not(.fa).active,
-    .badge-danger:not(.fa)[href],
-    .text-danger:not(.fa):hover,
-    .text-danger:not(.fa):focus,
-    .text-danger:not(.fa):active,
-    .text-danger:not(.fa).active {
+    .btn-danger:hover,
+    .btn-danger:focus,
+    .btn-danger:active,
+    .btn-danger.active {
         background-color: #c62828; /* New danger color on hover, focus, and active states */
         border-color: #c62828;
     }
 
-/* Override the warning classes in Bootstrap */
-.btn-warning:not(.fa),
-.badge-warning:not(.fa),
-.text-warning:not(.fa) {
+/* Warning button */
+.btn-warning {
     background-color: var(--bs-warning); /* New warning color */
     border-color: var(--bs-warning);
+    color: #fff; /* Text color for warning button */
 }
 
-    .btn-warning:not(.fa):hover,
-    .btn-warning:not(.fa):focus,
-    .btn-warning:not(.fa):active,
-    .btn-warning:not(.fa).active,
-    .badge-warning:not(.fa)[href],
-    .text-warning:not(.fa):hover,
-    .text-warning:not(.fa):focus,
-    .text-warning:not(.fa):active,
-    .text-warning:not(.fa).active {
+    .btn-warning:hover,
+    .btn-warning:focus,
+    .btn-warning:active,
+    .btn-warning.active {
         background-color: #ffb74d; /* New warning color on hover, focus, and active states */
         border-color: #ffb74d;
     }
@@ -171,4 +159,3 @@ h1, h2, h3 {
     border-color: var(--bs-primary);
     box-shadow: 0 0 0 0.25rem rgba(52, 58, 64, 0.25);
 }
-

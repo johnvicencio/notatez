@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
 using Notatez.Models.Services;
+using SendGrid.Extensions.DependencyInjection;
+using SendGrid.Helpers.Mail;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,21 +10,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<NoteService>();
 builder.Services.AddSingleton<AccountService>();
 
-// Add SendGrid email service
-// Setting up:
-// Load .env file
-//DotNetEnv.Env.Load();
-//// Get the SendGrid API key from the environment variables
-//string sendGridApiKey = Env.GetString("SENDGRID_API_KEY");
-//// Check if the API key is available
-//if (string.IsNullOrEmpty(sendGridApiKey))
-//{
-//    throw new Exception("SendGrid API key is missing or invalid.");
-//}
-//// Configure the SendGridEmailService with the API key
-//builder.Services.AddSingleton<SendGridEmailService>(provider =>
-//    new SendGridEmailService(sendGridApiKey));
-
+//Email configuration
+builder.Services.AddSendGrid(options =>
+{
+    options.ApiKey = builder.Configuration
+    .GetSection("EmailSettings").GetValue<string>("APIKey");
+});
 
 // Add configuration to lower case urls
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);

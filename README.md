@@ -43,7 +43,7 @@ By combining these features, Notatez offers a user-friendly note management solu
 1. ASP.NET Core MVC
 2. C#
 3. Bootstrap with Materialize design
-5. Content saved on GitHub
+5. Content as XML
 6. Deployed on IIS server wint Windows OS
 
 ## Using the application
